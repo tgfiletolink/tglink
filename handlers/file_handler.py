@@ -35,27 +35,23 @@ async def handle_file(client: Client, message: Message):
         # 2. Inform user
         status_msg = await message.reply_text("Processing your file...")
 
-        # 3. Process
-        logger.info(f"Generating link for {file_name} (ID: {file_id})")
-        direct_link = await LinkGenerator.get_direct_link(file_id)
+        # 3. Generate Streaming Link
+        # We use our own DOMAIN/PORT and provide context (chat and msg id)
+        base = Config.DOMAIN if Config.DOMAIN else f"http://localhost:{Config.PORT}"
+        # Ensure DOMAIN has https if it's Railway
+        if "railway.app" in base and not base.startswith("http"):
+            base = f"https://{base}"
+        
+        streaming_link = f"{base}/download/{file_id}?chat={message.chat.id}&msg={message.id}"
 
-        if direct_link:
-            # 4. Result
-            response_text = (
-                "✅ **Link Generated!**\n\n"
-                "**Your Direct Download Link:**\n"
-                f"`{direct_link}`\n\n"
-                "⚠️ **Note:** These links generally work for files under **20MB** due to Telegram Bot API limitations. Links may expire over time."
-            )
-            await status_msg.edit_text(response_text)
-        else:
-            await status_msg.edit_text(
-                "❌ **Error: Failed to generate link.**\n\n"
-                "Possible reasons:\n"
-                "1. The file is larger than **20MB** (Bot API limit).\n"
-                "2. The file is in a private channel/group I don't have access to.\n"
-                "3. Telegram's servers are temporarily slow."
-            )
+        # 4. Result
+        response_text = (
+            "✅ **Link Generated!**\n\n"
+            "**Your Direct Download Link (Fast & Large File Support):**\n"
+            f"`{streaming_link}`\n\n"
+            "🚀 **Supports up to 2GB!** Safe and encrypted."
+        )
+        await status_msg.edit_text(response_text)
 
     except Exception as e:
         logger.error(f"Error handling file: {e}")

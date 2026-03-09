@@ -8,6 +8,11 @@ class Config:
     API_ID = os.getenv("API_ID")
     API_HASH = os.getenv("API_HASH")
     BOT_TOKEN = os.getenv("BOT_TOKEN")
+    
+    # Port for the web server (Railway sets this automatically)
+    PORT = int(os.getenv("PORT", 8080))
+    # Your Railway domain (e.g., https://tgbote-production.up.railway.app)
+    DOMAIN = os.getenv("DOMAIN", "")
 
     # Final check
     if not all([API_ID, API_HASH, BOT_TOKEN]):
