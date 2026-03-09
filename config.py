@@ -5,14 +5,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    API_ID = os.getenv("API_ID")
-    API_HASH = os.getenv("API_HASH")
-    BOT_TOKEN = os.getenv("BOT_TOKEN")
+    API_ID = int(os.getenv("API_ID", 0))
+    API_HASH = os.getenv("API_HASH", "")
+    BOT_TOKEN = os.getenv("BOT_TOKEN", "")
     
-    # Port for the web server (Railway sets this automatically)
+    # Port & Domain
     PORT = int(os.getenv("PORT", 8080))
-    # Your Railway domain (e.g., https://tgbote-production.up.railway.app)
     DOMAIN = os.getenv("DOMAIN", "")
+    
+    # --- New Features ---
+    # Your Telegram ID (Get it from @MissRose_bot using /id)
+    ADMIN_ID = int(os.getenv("ADMIN_ID", 0)) 
+    # Channel username (e.g., @MyChannel)
+    FORCE_SUB_CHANNEL = os.getenv("FORCE_SUB_CHANNEL", "") 
+    # Max files a user can download per day
+    DAILY_LIMIT = int(os.getenv("DAILY_LIMIT", 5))
 
     # Final check
     if not all([API_ID, API_HASH, BOT_TOKEN]):
