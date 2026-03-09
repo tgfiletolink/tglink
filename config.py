@@ -20,6 +20,11 @@ class Config:
     FORCE_SUB_CHANNEL = os.getenv("FORCE_SUB_CHANNEL", "") 
     # Max files a user can download per day
     DAILY_LIMIT = int(os.getenv("DAILY_LIMIT", 5))
+    
+    # Custom Info
+    DEVELOPER = os.getenv("DEVELOPER", "@avriox")
+    SUPPORT_LINK = os.getenv("SUPPORT_LINK", "https://t.me/avriox")
+    BOT_USERNAME = os.getenv("BOT_USERNAME", "")
 
     # Final check
     if not all([API_ID, API_HASH, BOT_TOKEN]):
